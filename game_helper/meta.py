@@ -3,8 +3,8 @@ import random
 from yadisk import YaDisk
 import telebot
 from game_helper.config_executor import bot_config_access
-from game_helper.leveler import points_of_dexterity, points_of_accuracy, points_of_endurance, \
-    points_of_intelligence, points_of_charisma, points_of_strenght
+from game_helper.character_properties import points_of_dexterity, points_of_accuracy, points_of_endurance, \
+    points_of_intelligence, points_of_charisma, points_of_strenght, name_of_character, class_of_hero
 
 TELEGRAM_TOKEN = bot_config_access('telegram_bot_token')
 YANDEX_DISK_TOKEN = bot_config_access('ya_disk_token')
@@ -24,16 +24,19 @@ def send_image_from_yadisk(chat_id, image_name, text):
     else:
         bot.send_message(chat_id, 'Вам нельзя получать картинки!')
 
-def characteristics(class_of_character):
+def characteristics(class_and_name):
+    name = name_of_character(class_and_name, 1)
+    class_of_chatracter = class_of_hero(class_and_name)
     health = random.randint(1, 6) * 100
     armor = random.randint(1, 6) * 10
-    strenght = points_of_strenght(class_of_character) # сила
-    dexterity = points_of_dexterity(class_of_character) # ловкость
-    accuracy = points_of_accuracy(class_of_character) # меткость
-    endurance = points_of_endurance(class_of_character) # выносливость
-    intelligence = points_of_intelligence(class_of_character) # интеллект
-    charisma = points_of_charisma(class_of_character) # харизма
-    description = f'Здоровье персонажа: {health}\n'\
+    strenght = points_of_strenght(class_and_name) # сила
+    dexterity = points_of_dexterity(class_and_name) # ловкость
+    accuracy = points_of_accuracy(class_and_name) # меткость
+    endurance = points_of_endurance(class_and_name) # выносливость
+    intelligence = points_of_intelligence(class_and_name) # интеллект
+    charisma = points_of_charisma(class_and_name) # харизма
+    description = f'{class_of_chatracter} {name}\n'\
+                  f'Здоровье персонажа: {health}\n'\
                   f'Защита персонажа: {armor}\n' \
                   f'Сила персонажа: {strenght}\n' \
                   f'Ловкость персонажа: {dexterity}\n' \

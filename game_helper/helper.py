@@ -4,6 +4,7 @@ import telebot
 from yadisk import YaDisk
 from config_executor import bot_config_access
 from game_helper import meta
+from game_helper.character_properties import name_of_character
 from game_helper.meta import get_files_from_yadisk, send_image_from_yadisk
 
 TELEGRAM_TOKEN = bot_config_access('telegram_bot_token')
@@ -29,13 +30,14 @@ def get_picture(m, res=False):
 @bot.message_handler(commands=["choose_pers"])
 def menu_of_avatars(message, res=False):
     bot.register_next_step_handler(message, choose_avatar)
-    answer = 'Отправь ответом на это сообщение один из вариантов: man_archer\nman_bard\nman_hunter\nman_mage\nman_thief\n' \
+    answer = 'Отправь ответом на это сообщение один из вариантов и имя персонажа: man_archer\nman_bard\nman_hunter\nman_mage\nman_thief\n' \
              'man_warrior\nwoman_archer\nwoman_bard\nwoman_hunter\nwoman_mage\nwoman_thief\nwoman_warrior  '
     bot.send_message(message.chat.id, answer)
 def choose_avatar(m):
     choosen_avatar = m.text
     numbers =['01','02']
-    avatar_for_gamer = f'{choosen_avatar}_{random.choice(numbers)}.jpg'
+    name_of_file = name_of_character(choosen_avatar, 0)
+    avatar_for_gamer = f'{name_of_file}_{random.choice(numbers)}.jpg'
     avatars = meta.meta(YANDEX_DISK_AVATARS)
     names_of_avatars = meta.get_files_from_yadisk(YANDEX_DISK_AVATARS)
     # avatar = names_of_avatars[random.randint(0, len(avatars))]

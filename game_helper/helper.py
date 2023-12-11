@@ -1,4 +1,5 @@
 import random
+import time
 
 import telebot
 from yadisk import YaDisk
@@ -41,14 +42,14 @@ def menu_of_avatars(message, res=False):
     bot.send_message(message.chat.id, answer)
 def choose_avatar(m):
     choosen_avatar = m.text
-    numbers =['01','02']
-    name_of_file = name_of_character(choosen_avatar, 0)
-    avatar_for_gamer = f'{name_of_file}_{random.choice(numbers)}.jpg'
-    avatars = meta(YANDEX_DISK_AVATARS)
-    names_of_avatars = get_files_from_yadisk(YANDEX_DISK_AVATARS)
-    # avatar = names_of_avatars[random.randint(0, len(avatars))]
-    characteristica = characteristics(choosen_avatar) # ссылка на выбранный аватар
-    send_image_from_yadisk(m.chat.id, avatars[avatar_for_gamer], characteristica)
+    if len(choosen_avatar.split()) == 1:
+        choosen_avatar = choosen_avatar + ' 1'
+    numbers = ['01', '02']
+    name_of_file = name_of_character(choosen_avatar, 0) # Имя аватара
+    avatar_for_gamer = f'{name_of_file}_{random.choice(numbers)}.jpg' # Выбор одного из двух аватаров
+    avatars = meta(YANDEX_DISK_AVATARS) # словарь доступных аватаров
+    description_of_character = characteristics(choosen_avatar) # создание описания персонажа
+    send_image_from_yadisk(m.chat.id, avatars[avatar_for_gamer], description_of_character)
 
 
 # @bot.message_handler(commands=["get_picture"])
@@ -58,5 +59,13 @@ def choose_avatar(m):
 #     selected_file = files[random.randint(0, len(files))]
 #     send_image_from_yadisk(m.chat.id, items[selected_file])
 
-bot.polling(none_stop=True, interval=0)
 
+# bot.polling(none_stop=True, timeout=123)
+
+if __name__ == '__main__':
+    while True:
+        try:
+            bot.polling(none_stop=True, timeout=123)
+        except Exception as e:
+            time.sleep(3)
+            print(e)

@@ -29,6 +29,9 @@ def characteristics(class_and_name):
     Функция создает текстовое описание характеристик персонажа
     '''
     name = name_of_character(class_and_name, 1)
+    if name == '1':
+        name = 'Имя не выбрано'
+
     class_of_chatracter = class_of_hero(class_and_name)
     health = random.randint(1, 6) * 100
     armor = random.randint(1, 6) * 10

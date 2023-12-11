@@ -2,8 +2,8 @@ import random
 
 from yadisk import YaDisk
 import telebot
-from game_helper.config_executor import bot_config_access
-from game_helper.character_properties import points_of_dexterity, points_of_accuracy, points_of_endurance, \
+from config_executor import bot_config_access
+from character_properties import points_of_dexterity, points_of_accuracy, points_of_endurance, \
     points_of_intelligence, points_of_charisma, points_of_strenght, name_of_character, class_of_hero
 
 TELEGRAM_TOKEN = bot_config_access('telegram_bot_token')
@@ -25,6 +25,9 @@ def send_image_from_yadisk(chat_id, image_name, text):
         bot.send_message(chat_id, 'Вам нельзя получать картинки!')
 
 def characteristics(class_and_name):
+    '''
+    Функция создает текстовое описание характеристик персонажа
+    '''
     name = name_of_character(class_and_name, 1)
     class_of_chatracter = class_of_hero(class_and_name)
     health = random.randint(1, 6) * 100
@@ -36,14 +39,14 @@ def characteristics(class_and_name):
     intelligence = points_of_intelligence(class_and_name) # интеллект
     charisma = points_of_charisma(class_and_name) # харизма
     description = f'{class_of_chatracter} {name}\n'\
-                  f'Здоровье персонажа: {health}\n'\
-                  f'Защита персонажа: {armor}\n' \
-                  f'Сила персонажа: {strenght}\n' \
-                  f'Ловкость персонажа: {dexterity}\n' \
-                  f'Меткость персонажа: {accuracy}\n' \
-                  f'Выносливость персонажа: {endurance}\n' \
-                  f'Интеллект персонажа: {intelligence}\n' \
-                  f'Харизма персонажа: {charisma}\n'
+                  f'Здоровье : {health}\n'\
+                  f'Защита : {armor}\n' \
+                  f'Сила : {strenght}\n' \
+                  f'Ловкость : {dexterity}\n' \
+                  f'Меткость : {accuracy}\n' \
+                  f'Выносливость : {endurance}\n' \
+                  f'Интеллект : {intelligence}\n' \
+                  f'Харизма : {charisma}\n'
     return description
 
 

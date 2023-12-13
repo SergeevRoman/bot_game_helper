@@ -13,3 +13,4 @@ def bonus():
     random_value = random.choice(bonus_dict[random_key])
     action_for_bonus = f'{random_key} {random_value}'
     return action_for_bonus
+

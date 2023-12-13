@@ -5,6 +5,7 @@ import telebot
 from yadisk import YaDisk
 from config_executor import bot_config_access
 from character_properties import name_of_character
+from functions import bonus
 from meta import get_files_from_yadisk, send_image_from_yadisk, meta, characteristics
 
 TELEGRAM_TOKEN = bot_config_access('telegram_bot_token')
@@ -50,6 +51,18 @@ def choose_avatar(m):
     avatars = meta(YANDEX_DISK_AVATARS) # словарь доступных аватаров
     description_of_character = characteristics(choosen_avatar) # создание описания персонажа
     send_image_from_yadisk(m.chat.id, avatars[avatar_for_gamer], description_of_character)
+
+@bot.message_handler(commands=["get_task_for_bonus"])
+def get_task_for_bonus(m):
+    answer = bonus()
+    bot.send_message(m.chat.id, answer)
+
+@bot.message_handler(commands=["get_bonus"])
+def get_bonus(m):
+    pass
+@bot.message_handler(commands=["open_chest"])
+def open_chest(m):
+    pass
 
 
 # @bot.message_handler(commands=["get_picture"])

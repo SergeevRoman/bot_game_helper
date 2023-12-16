@@ -5,13 +5,16 @@ import telebot
 from yadisk import YaDisk
 from config_executor import bot_config_access
 from character_properties import name_of_character
-from functions import bonus, descriptor_of_situation
+from functions import descriptor_of_situation, descriptor_of_bonus
 from meta import get_files_from_yadisk, send_image_from_yadisk, meta, characteristics
 
 TELEGRAM_TOKEN = bot_config_access('telegram_bot_token')
 YANDEX_DISK_TOKEN = bot_config_access('ya_disk_token')
 YANDEX_DISK_PUBLIC_FOLDER = bot_config_access('disk_public_folder')
 YANDEX_DISK_AVATARS = bot_config_access('disk_avatars')
+YANDEX_DISK_BONUSES = bot_config_access('disk_bonuses')
+YANDEX_DISK_CONTENT_OF_CHESTS = bot_config_access('disk_chest')
+
 
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 y = YaDisk(token=YANDEX_DISK_TOKEN)
@@ -57,10 +60,20 @@ def choose_avatar(m):
 
 @bot.message_handler(commands=["get_bonus"])
 def get_bonus(m):
-    pass
+    menu_of_bonuses = get_files_from_yadisk(YANDEX_DISK_BONUSES)
+    bonuses = meta(YANDEX_DISK_BONUSES)
+    random_bonus = random.choice(menu_of_bonuses)
+    description_of_bonus = descriptor_of_bonus(random_bonus)
+    send_image_from_yadisk(m.chat.id, bonuses[random_bonus], description_of_bonus)
+
 @bot.message_handler(commands=["open_chest"])
 def open_chest(m):
-    pass
+    menu_of_content = get_files_from_yadisk(YANDEX_DISK_CONTENT_OF_CHESTS)
+    contents = meta(YANDEX_DISK_CONTENT_OF_CHESTS)
+    random_content = random.choice(menu_of_content)
+    description_of_content = descriptor_of_bonus(random_content)
+    send_image_from_yadisk(m.chat.id, contents[random_content], description_of_content)
+
 
 
 # @bot.message_handler(commands=["get_picture"])

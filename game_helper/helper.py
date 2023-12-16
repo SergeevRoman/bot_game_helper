@@ -5,7 +5,7 @@ import telebot
 from yadisk import YaDisk
 from config_executor import bot_config_access
 from character_properties import name_of_character
-from functions import bonus
+from functions import bonus, descriptor_of_situation
 from meta import get_files_from_yadisk, send_image_from_yadisk, meta, characteristics
 
 TELEGRAM_TOKEN = bot_config_access('telegram_bot_token')
@@ -24,15 +24,18 @@ def start(m, res=False):
 def menu_of_locations(message, res=False):
     bot.register_next_step_handler(message, get_situation)
     answer = 'Отправь ответом на это сообщение одну из локаций: \nbridge\ncastle\ncatacombs\ncave\ndesert\nforest\nforest_house\n' \
-             'ice_cave\niced_lake\nmountains\nport\nruins\nshore\nswamp'
+             'ice_cave\niced_lake\nmountains\nport\nruins\nshore\nswamp\nmaze'
     bot.send_message(message.chat.id, answer)
+
+
 def get_situation(m):
     chosen_location = m.text
     location = f'{YANDEX_DISK_PUBLIC_FOLDER}{chosen_location}'
     items = meta(location) # словарь из названия и ссылки изображения
     files = get_files_from_yadisk(location) # список названий изображений из указанной папки
     selected_file = files[random.randint(0, len(files)-1)] # выбор случайного названия из списка
-    description = 'Твоя ситуация'
+    type_of_situation = selected_file.split('_')
+    description = descriptor_of_situation(type_of_situation[0])
     send_image_from_yadisk(m.chat.id, items[selected_file], description)
 
 @bot.message_handler(commands=["choose_pers"])
@@ -51,11 +54,6 @@ def choose_avatar(m):
     avatars = meta(YANDEX_DISK_AVATARS) # словарь доступных аватаров
     description_of_character = characteristics(choosen_avatar) # создание описания персонажа
     send_image_from_yadisk(m.chat.id, avatars[avatar_for_gamer], description_of_character)
-
-@bot.message_handler(commands=["get_task_for_bonus"])
-def get_task_for_bonus(m):
-    answer = bonus()
-    bot.send_message(m.chat.id, answer)
 
 @bot.message_handler(commands=["get_bonus"])
 def get_bonus(m):

@@ -36,8 +36,8 @@ def descriptor_of_situation(type_of_situation):
     return description_of_situation
 
 def descriptor_of_bonus(name_of_bonus):
-    bonus = name_of_bonus.split('_')
-    item = bonus[0]
+    bonus_name = name_of_bonus.split('_')
+    item = bonus_name[0]
     description_of_bonus = ''
     if item == 'weapon':
         description_of_bonus = f'Это оружие прибавит к твоему урону {random.randint(1, 6)} очков'
@@ -50,6 +50,8 @@ def descriptor_of_bonus(name_of_bonus):
         description_of_bonus = f'Это сундук. Открываем? /open_chest'
     if item == 'mimik':
         description_of_bonus = f'Сундук оказался опасным мимиком! Придется драться. Здоровья  у него {random.randint(1,6)*10}'
+    if item == 'gold':
+        description_of_bonus = f'Ты нашел {random.randint(1, 6)*100} золота'
     return description_of_bonus
 
 

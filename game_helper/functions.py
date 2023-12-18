@@ -1,5 +1,9 @@
 import random
 
+from config_executor import bot_config_access
+from meta import get_files_from_yadisk, send_image_from_yadisk, meta
+
+YANDEX_DISK_PUBLIC_FOLDER = bot_config_access('disk_public_folder')
 def bonus():
     bonus_dict = {
         'Спой': ['Шансон песню', 'фонк песню', 'металкор песню', 'фолк песню', 'русский рок', 'песню короля и шута', 'что-нибудь популярное'],
@@ -55,3 +59,11 @@ def descriptor_of_bonus(name_of_bonus):
     return description_of_bonus
 
 
+def choose_place(callbak_data, chatid):
+    location = f'{YANDEX_DISK_PUBLIC_FOLDER}{callbak_data}'
+    items = meta(location)  # словарь из названия и ссылки изображения
+    files = get_files_from_yadisk(location)  # список названий изображений из указанной папки
+    selected_file = files[random.randint(0, len(files) - 1)]  # выбор случайного названия из списка
+    type_of_situation = selected_file.split('_')
+    description = descriptor_of_situation(type_of_situation[0])
+    send_image_from_yadisk(chatid, items[selected_file], description)

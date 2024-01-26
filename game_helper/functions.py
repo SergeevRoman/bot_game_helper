@@ -1,5 +1,9 @@
 import random
 
+from config_executor import bot_config_access
+from meta import get_files_from_yadisk, send_image_from_yadisk, meta
+
+YANDEX_DISK_PUBLIC_FOLDER = bot_config_access('disk_public_folder')
 def bonus():
     bonus_dict = {
         'Спой': ['Шансон песню', 'фонк песню', 'металкор песню', 'фолк песню', 'русский рок', 'песню короля и шута', 'что-нибудь популярное'],
@@ -17,22 +21,17 @@ def bonus():
 
 def descriptor_of_situation(type_of_situation):
     description_of_situation = ''
+    skills = ['Сила', 'Ловкость', 'Меткость', 'Выносливость', 'Интеллект', 'Харизма']
     if type_of_situation == 'trixter':
         description_of_situation = 'Так так, кто тут у нас? Разгадай загадку, отгадай вопрос! Выбрать загадку ' #может быть сюда самому впихивать загадку из файла
     if type_of_situation == 'bonus':
         description_of_situation = bonus()
     if type_of_situation == 'danger':
-        description_of_situation = 'Ты замечаешь опасность. Бросай кубик узнаем, что тебя ждет\n' \
-                       '1. Проверка профильного навыка\n' \
-                       '2. Использование одного из навыков\n' \
-                       '3. Сразу начинается драка, враг наносит удар первым\n' \
-                       '4. Сбежать\n' \
-                       '5. Нанести удар первым.\n' \
-                       '6. Решить самому выбрав одно из решений выше'
+        description_of_situation = f'проверка навыков по очереди ({random.choice(skills)} : {random.randint(1, 6)}), ({random.choice(skills)} : {random.randint(1, 6)}), ({random.choice(skills)} : {random.randint(1, 6)})',
     if type_of_situation == 'trade':
         description_of_situation = 'Это торговец. Решай - будешь с ним торговать или пойдешь мимо'
     if type_of_situation == 'help':
-        description_of_situation = 'придумать'
+        description_of_situation = f'Мне нужна помощь, для этого тебе понадобится {random.choice(skills)} : {random.randint(1, 6)}'
     return description_of_situation
 
 def descriptor_of_bonus(name_of_bonus):
@@ -55,3 +54,11 @@ def descriptor_of_bonus(name_of_bonus):
     return description_of_bonus
 
 
+def choose_place(callbak_data, chatid):
+    location = f'{YANDEX_DISK_PUBLIC_FOLDER}{callbak_data}'
+    items = meta(location)  # словарь из названия и ссылки изображения
+    files = get_files_from_yadisk(location)  # список названий изображений из указанной папки
+    selected_file = files[random.randint(0, len(files) - 1)]  # выбор случайного названия из списка
+    type_of_situation = selected_file.split('_')
+    description = descriptor_of_situation(type_of_situation[0])
+    send_image_from_yadisk(chatid, items[selected_file], description)

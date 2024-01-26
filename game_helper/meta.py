@@ -33,8 +33,8 @@ def characteristics(class_and_name):
         name = 'Имя не выбрано'
 
     class_of_chatracter = class_of_hero(class_and_name)
-    health = random.randint(1, 6) * 100
-    armor = random.randint(1, 6) * 10
+    health = random.randint(3, 6) * '❤'
+    armor = random.randint(3, 6) * '🛡'
     strenght = points_of_strenght(class_and_name) # сила
     dexterity = points_of_dexterity(class_and_name) # ловкость
     accuracy = points_of_accuracy(class_and_name) # меткость

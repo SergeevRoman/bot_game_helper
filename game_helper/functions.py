@@ -21,22 +21,17 @@ def bonus():
 
 def descriptor_of_situation(type_of_situation):
     description_of_situation = ''
+    skills = ['Сила', 'Ловкость', 'Меткость', 'Выносливость', 'Интеллект', 'Харизма']
     if type_of_situation == 'trixter':
         description_of_situation = 'Так так, кто тут у нас? Разгадай загадку, отгадай вопрос! Выбрать загадку ' #может быть сюда самому впихивать загадку из файла
     if type_of_situation == 'bonus':
         description_of_situation = bonus()
     if type_of_situation == 'danger':
-        description_of_situation = 'Ты замечаешь опасность. Бросай кубик узнаем, что тебя ждет\n' \
-                       '1. Проверка профильного навыка\n' \
-                       '2. Использование одного из навыков\n' \
-                       '3. Сразу начинается драка, враг наносит удар первым\n' \
-                       '4. Сбежать\n' \
-                       '5. Нанести удар первым.\n' \
-                       '6. Решить самому выбрав одно из решений выше'
+        description_of_situation = f'проверка навыков по очереди ({random.choice(skills)} : {random.randint(1, 6)}), ({random.choice(skills)} : {random.randint(1, 6)}), ({random.choice(skills)} : {random.randint(1, 6)})',
     if type_of_situation == 'trade':
         description_of_situation = 'Это торговец. Решай - будешь с ним торговать или пойдешь мимо'
     if type_of_situation == 'help':
-        description_of_situation = 'придумать'
+        description_of_situation = f'Мне нужна помощь, для этого тебе понадобится {random.choice(skills)} : {random.randint(1, 6)}'
     return description_of_situation
 
 def descriptor_of_bonus(name_of_bonus):

@@ -49,23 +49,23 @@ def get_situation(m):
 def callback_handler(call):
     choose_place(call.data, call.message.chat.id)
 
-@bot.message_handler(commands=["get_situation_old"])
-def menu_of_locations(message, res=False):
-    bot.register_next_step_handler(message, get_situation)
-    answer = 'Отправь ответом на это сообщение одну из локаций: \nbridge\ncastle\ncatacombs\ncave\ndesert\nforest\nforest_house\n' \
-             'ice_cave\niced_lake\nmountains\nport\nruins\nshore\nswamp\nmaze'
-    bot.send_message(message.chat.id, answer)
-
-
-def get_situation(m):
-    chosen_location = m.text
-    location = f'{YANDEX_DISK_PUBLIC_FOLDER}{chosen_location}'
-    items = meta(location) # словарь из названия и ссылки изображения
-    files = get_files_from_yadisk(location) # список названий изображений из указанной папки
-    selected_file = files[random.randint(0, len(files)-1)] # выбор случайного названия из списка
-    type_of_situation = selected_file.split('_')
-    description = descriptor_of_situation(type_of_situation[0])
-    send_image_from_yadisk(m.chat.id, items[selected_file], description)
+# @bot.message_handler(commands=["get_situation_old"])
+# def menu_of_locations(message, res=False):
+#     bot.register_next_step_handler(message, get_situation)
+#     answer = 'Отправь ответом на это сообщение одну из локаций: \nbridge\ncastle\ncatacombs\ncave\ndesert\nforest\nforest_house\n' \
+#              'ice_cave\niced_lake\nmountains\nport\nruins\nshore\nswamp\nmaze'
+#     bot.send_message(message.chat.id, answer)
+#
+#
+# def get_situation(m):
+#     chosen_location = m.text
+#     location = f'{YANDEX_DISK_PUBLIC_FOLDER}{chosen_location}'
+#     items = meta(location) # словарь из названия и ссылки изображения
+#     files = get_files_from_yadisk(location) # список названий изображений из указанной папки
+#     selected_file = files[random.randint(0, len(files)-1)] # выбор случайного названия из списка
+#     type_of_situation = selected_file.split('_')
+#     description = descriptor_of_situation(type_of_situation[0])
+#     send_image_from_yadisk(m.chat.id, items[selected_file], description)
 
 @bot.message_handler(commands=["choose_pers"])
 def menu_of_avatars(message, res=False):
